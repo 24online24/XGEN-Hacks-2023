@@ -11,7 +11,7 @@ from translate import Translator
 
 # Fiecare model (LLM) are un prompt specific optimizat pentru dezvoltarea
 # de aplicații de tip retrieval-augmented-generation (chat, întrebare-răspuns).
-QA_CHAIN_PROMPT = hub.pull("rlm/rag-prompt-mistral")
+QA_CHAIN_PROMPT = hub.pull("rlm/rag-prompt-llama")
 
 TRANSLATOR_RO_TO_EN = Translator(to_lang="en", from_lang="ro")
 TRANSLATOR_EN_TO_RO = Translator(to_lang="ro", from_lang="en")
@@ -21,7 +21,7 @@ def load_llm():
     """Inițializează modelul dorit. Este recomandată folosirea
     modelelor Mistral sau Llama2."""
     llm = Ollama(
-        model="mistral",
+        model="llama2",
         verbose=True,
         callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
     )
