@@ -1,4 +1,3 @@
-# import required dependencies
 from langchain import hub
 from langchain.embeddings import GPT4AllEmbeddings
 from langchain.vectorstores import Chroma
@@ -7,13 +6,14 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import chainlit as cl
 from langchain.chains import RetrievalQA, RetrievalQAWithSourcesChain
-# Set up RetrievelQA model
+# Fiecare model (LLM) are un prompt specific optimizat pentru dezvoltarea
+# de aplicații de tip retrieval-augmented-generation (chat, întrebare-răspuns).
 QA_CHAIN_PROMPT = hub.pull("rlm/rag-prompt-mistral")
-
-# load the LLM
 
 
 def load_llm():
+    """Inițializează modelul dorit. Este recomandată folosirea
+    modelelor Mistral sau Llama2."""
     llm = Ollama(
         model="mistral",
         verbose=True,
@@ -33,6 +33,8 @@ def retrieval_qa_chain(llm, vectorstore):
 
 
 def qa_bot():
+    """Inițializează bot-ul conversațional folosind modelul LLM ales și
+    documentele (în cazul nostru cărțile) serializate și stocate în vectorstore."""
     llm = load_llm()
     DB_PATH = "vectorstores/db/"
     vectorstore = Chroma(persist_directory=DB_PATH,
@@ -44,6 +46,10 @@ def qa_bot():
 
 @cl.on_chat_start
 async def start():
+    """Funcție apelată la începutul fiecărei conversații noi. Aceasta inițializează
+    bot-ul conversațional și îl informază pe utilizator că acesta pornește. Apoi,
+    mesajul este actualizat cu întâmpinarea bot-ului. Sesiunea este inițializată,
+    folosind actualul "lanț" de mesaje. Acesta va conține conversația."""
     chain = qa_bot()
     msg = cl.Message(content="Firing up the research info bot...")
     await msg.send()
@@ -54,6 +60,9 @@ async def start():
 
 @cl.on_message
 async def main(message):
+    """Funcția apelată la fiecare mesaj primit de bot. Acesta va răspunde
+    la întrebarea utilizatorului, folosind modelul LLM și documentele stocate
+    în vectorstore."""
     chain = cl.user_session.get("chain")
     cb = cl.AsyncLangchainCallbackHandler(
         stream_final_answer=True,
