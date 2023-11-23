@@ -1,6 +1,7 @@
 *.pdf
 *.bin
 *.sqlite3
+*.pickle
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
