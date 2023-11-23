@@ -61,12 +61,12 @@ async def start():
     bot-ul conversațional și îl informază pe utilizator că acesta pornește. Apoi,
     mesajul este actualizat cu întâmpinarea bot-ului. Sesiunea este inițializată,
     folosind actualul "lanț" de mesaje. Acesta va conține conversația."""
-    chain = qa_bot()
+    bot = qa_bot()
     msg = cl.Message(content="Firing up the research info bot...")
     await msg.send()
     msg.content = "Hi, welcome to research info bot. What is your query?"
     await msg.update()
-    cl.user_session.set("chain", chain)
+    cl.user_session.set("chain", bot)
 
 
 @cl.on_message
@@ -74,16 +74,16 @@ async def main(message):
     """Funcția apelată la fiecare mesaj primit de bot. Acesta va răspunde
     la întrebarea utilizatorului, folosind modelul LLM și documentele stocate
     în vectorstore."""
-    chain = cl.user_session.get("chain")
+    bot = cl.user_session.get("chain")
     cb = cl.AsyncLangchainCallbackHandler(
         stream_final_answer=True,
         answer_prefix_tokens=["FINAL", "ANSWER"]
     )
     cb.answer_reached = True
-    res = await chain.acall(message.content, callbacks=[cb])
+    res = await bot.acall(message.content, callbacks=[cb])
     print(f"response: {res}")
     answer = res["result"]
     answer = answer.replace(".", ".\n")
-    answer = T5_SMALL_PIPELINE(answer)[0]['translation_text']
+    translated_answer = T5_SMALL_PIPELINE(answer)[0]['translation_text']
 
-    await cl.Message(content=answer).send()
+    await cl.Message(content=translated_answer).send()
