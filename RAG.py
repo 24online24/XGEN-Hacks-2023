@@ -13,7 +13,8 @@ from translate import Translator
 # de aplicații de tip retrieval-augmented-generation (chat, întrebare-răspuns).
 QA_CHAIN_PROMPT = hub.pull("rlm/rag-prompt-mistral")
 
-TRANSLATOR = Translator(to_lang="ro", from_lang="en")
+TRANSLATOR_RO_TO_EN = Translator(to_lang="en", from_lang="ro")
+TRANSLATOR_EN_TO_RO = Translator(to_lang="ro", from_lang="en")
 
 
 def load_llm():
@@ -74,10 +75,11 @@ async def main(message):
         answer_prefix_tokens=["FINAL", "ANSWER"]
     )
     cb.answer_reached = True
-    res = await bot.acall(message.content, callbacks=[cb])
+    trasnlated_message = TRANSLATOR_RO_TO_EN.translate(message.content)
+    res = await bot.acall(trasnlated_message, callbacks=[cb])
     print(f"response: {res}")
     answer = res["result"]
     answer = answer.replace(".", ".\n")
-    translated_answer = TRANSLATOR.translate(answer)
+    translated_answer = TRANSLATOR_EN_TO_RO.translate(answer)
 
     await cl.Message(content=translated_answer).send()
