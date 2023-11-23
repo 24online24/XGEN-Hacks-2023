@@ -7,19 +7,13 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import chainlit as cl
 from langchain.chains import RetrievalQA, RetrievalQAWithSourcesChain
 
-from transformers import pipeline
+from translate import Translator
 
 # Fiecare model (LLM) are un prompt specific optimizat pentru dezvoltarea
 # de aplicații de tip retrieval-augmented-generation (chat, întrebare-răspuns).
 QA_CHAIN_PROMPT = hub.pull("rlm/rag-prompt-mistral")
 
-T5_SMALL_PIPELINE = pipeline(
-    task="translation_en_to_ro",
-    model="t5-small",
-    max_length=1024,
-    model_kwargs={
-        "cache_dir": '/Users/rares/code/hacks2023/XGEN-Hacks-2023/t5_small'}
-)
+TRANSLATOR = Translator(to_lang="ro", from_lang="en")
 
 
 def load_llm():
@@ -84,6 +78,6 @@ async def main(message):
     print(f"response: {res}")
     answer = res["result"]
     answer = answer.replace(".", ".\n")
-    translated_answer = T5_SMALL_PIPELINE(answer)[0]['translation_text']
+    translated_answer = TRANSLATOR.translate(answer)
 
     await cl.Message(content=translated_answer).send()
