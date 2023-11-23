@@ -27,7 +27,7 @@ def retrieval_qa_chain(llm, vectorstore):
         llm,
         retriever=vectorstore.as_retriever(),
         chain_type_kwargs={"prompt": QA_CHAIN_PROMPT},
-        return_source_documents=True,
+        return_source_documents=False,
     )
     return qa_chain
 
@@ -74,11 +74,5 @@ async def main(message):
     print(f"response: {res}")
     answer = res["result"]
     answer = answer.replace(".", ".\n")
-    sources = res["source_documents"]
-
-    if sources:
-        answer += f"\nSources: "+str(str(sources))
-    else:
-        answer += f"\nNo Sources found"
 
     await cl.Message(content=answer).send()
