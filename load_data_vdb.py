@@ -4,7 +4,7 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings import GPT4AllEmbeddings
 
 from translate import Translator
-import time
+import re
 
 DATA_PATH = "data/"
 DB_PATH = "vectorstores/db/"
@@ -14,16 +14,21 @@ def create_vector_db():
     loader = PyPDFDirectoryLoader(DATA_PATH)
     documents = loader.load()
     print(f"Processed {len(documents)} pdf files")
+
     translator_ro_to_en = Translator(to_lang="en", from_lang="ro")
 
-    start_time = time.time()
-    for idx, doc in enumerate(documents):
+    for doc in documents:
+        content = re.sub(r'\s+', ' ', doc.page_content)
+        content = content.replace('\n', '').replace('\r', '')
+        content = re.sub(r'^[0-9]+\s', '', content, flags=re.MULTILINE)
+
+        if not content.strip():
+            documents.remove(doc)
+            continue
+
         translated_page_content = translator_ro_to_en.translate(
-            doc.page_content)
+            content)
         doc.page_content = translated_page_content
-        if idx % 10 == 0:
-            print(f"{idx}- {time.time() - start_time} seconds")
-            start_time = time.time()
 
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000, chunk_overlap=50)
