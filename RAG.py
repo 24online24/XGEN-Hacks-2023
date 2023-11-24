@@ -5,27 +5,15 @@ from langchain.llms import Ollama
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import chainlit as cl
-from langchain.chains import RetrievalQA, RetrievalQAWithSourcesChain
+from langchain.chains import RetrievalQA
 
-from azure.ai.translation.text import TextTranslationClient, TranslatorCredential
-from azure.ai.translation.text.models import InputTextItem
-from azure.core.exceptions import HttpResponseError
-
-from dotenv import load_dotenv
-import os
+import utils
 
 # Fiecare model (LLM) are un prompt specific optimizat pentru dezvoltarea
 # de aplicații de tip retrieval-augmented-generation (chat, întrebare-răspuns).
 QA_CHAIN_PROMPT = hub.pull("rlm/rag-prompt-llama")
 
-load_dotenv()
-KEY = os.getenv("MSKEY")
-ENDPOINT = 'https://api.cognitive.microsofttranslator.com/'
-REGION = 'francecentral'
-
-CREDENTIAL = TranslatorCredential(KEY, REGION)
-TEXT_TRANSLATOR = TextTranslationClient(
-    endpoint=ENDPOINT, credential=CREDENTIAL)
+TEXT_TRANSLATOR = utils.create_translator()
 
 
 def load_llm():
@@ -86,31 +74,11 @@ async def main(message):
         answer_prefix_tokens=["FINAL", "ANSWER"]
     )
     cb.answer_reached = True
-    trasnlated_message = translate_message(message.content, "ro", "en")
+    trasnlated_message = utils.translate_message(
+        TEXT_TRANSLATOR, message.content, "ro", "en")
     res = await bot.acall(trasnlated_message, callbacks=[cb])
     answer = res["result"]
     answer = answer.replace(".", ".\n")
-    translated_answer = translate_message(answer, "en", "ro")
+    translated_answer = TEXT_TRANSLATOR.translate_message(answer, "en", "ro")
 
     await cl.Message(content=translated_answer).send()
-
-
-def translate_message(message: str, from_lang: str, to_lang: str) -> str:
-    try:
-        source_language = from_lang
-        target_languages = [to_lang]
-        input_text_elements = [InputTextItem(text=message)]
-
-        response = TEXT_TRANSLATOR.translate(
-            content=input_text_elements, to=target_languages, from_parameter=source_language)
-        translation = response[0] if response else None
-
-        if translation:
-            translated_text = translation.translations[0]
-            return translated_text.text
-
-    except HttpResponseError as exception:
-        msg = exception.error.message
-        print(f"Error Code: {exception.error.code}")
-        print(f"Message: {msg}")
-        return msg

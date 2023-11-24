@@ -2,6 +2,7 @@
 *.bin
 *.sqlite3
 *.pickle
+*.txt
 t5_small/
 # Byte-compiled / optimized / DLL files
 __pycache__/
