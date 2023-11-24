@@ -28,6 +28,8 @@ source venv/bin/activate # Linux
 venv\Scripts\activate # Windows
 ```
 
+Pentru a instala dependențele, rulați următoarea comandă:
+
 ```bash
 pip3 install -r requirements.txt
 ```
