@@ -1,14 +1,57 @@
-# Welcome to Chainlit! 🚀🤖
+# Chat GiPiTi! 🤖📚
 
-Hi there, Developer! 👋 We're excited to have you on board. Chainlit is a powerful tool designed to help you prototype, debug and share applications built on top of LLMs.
+Salutare! 👋 Chat GiPiTi este un chatbot care te ajută să aprofundezi textul unei cărți, într-un mod interactiv și distractiv. 🤓
 
-## Useful Links 🔗
+## Cum functioneaza? 🤔
 
-- **Documentation:** Get started with our comprehensive [Chainlit Documentation](https://docs.chainlit.io) 📚
-- **Discord Community:** Join our friendly [Chainlit Discord](https://discord.gg/k73SQ3FyUh) to ask questions, share your projects, and connect with other developers! 💬
+Chat GiPiTi are la bază un LLM, mai exact Llama2_7b 🦙, care împreună cu un RAG (Retrieve and Generate) model, oferă răspunsuri bazate pe context. 🤖
 
-We can't wait to see what you create with Chainlit! Happy coding! 💻😊
+Utilizatorul poate încărca o carte în format PDF, iar chatbot-ul va extrage textul și va crea un context pentru a putea răspunde la întrebări. 📚
 
-## Welcome screen
+## Cum se folosește Chat GipiTi? 🤓
 
-To modify the welcome screen, edit the `chainlit.md` file at the root of your project. If you do not want a welcome screen, just leave this file empty.
+### Dedependențe
+
+Avem nevoie de următoarele dependențe pentru a rula aplicația:
+
+- Ollama Desktop 🦙 -> aplicatie de gestionare și gazduire a modelelor LLM (găzduită în mod local local)
+- Python 3.10 🐍 -> împreună cu packetele pip specificate în fisierul requirements.txt
+- cheie pentru translator 🔑 -> obținută de la serviciul de traducere al [Microsoft Azure](https://portal.azure.com/#create/Microsoft.CognitiveServicesTextTranslation)
+
+### Instalare
+
+Recomandam folosirea unui virtual environment pentru a instala dependențele. Pentru a crea un virtual environment, rulați următoarele comenzi:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate # Linux
+venv\Scripts\activate # Windows
+```
+
+```bash
+pip3 install -r requirements.txt
+```
+
+### Configurare
+
+Pentru a configura chatbot-ul, trebuie să creați un fișier `.env` în directorul rădăcină al proiectului. Acesta trebuie să conțină următoarele variabile de mediu:
+
+```bash
+
+```
+
+### Utilizare
+
+Pentru a încărca datele în Ollama Desktop, rulați următoarea comandă:
+
+```bash
+python3 load_data_vdb.py
+```
+
+Pentru a rula chatbot-ul, rulați următoarea comandă:
+
+```bash
+python3 RAG.py
+```
+
+Chatbot-ul va rula pe portul 8000.
