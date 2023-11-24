@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from langchain import hub
 from langchain.embeddings import GPT4AllEmbeddings
 from langchain.vectorstores import Chroma
@@ -14,6 +16,9 @@ import utils
 QA_CHAIN_PROMPT = hub.pull("rlm/rag-prompt-llama")
 
 TEXT_TRANSLATOR = utils.create_translator()
+
+load_dotenv()
+LANG = os.getenv("LANGUAGE")
 
 
 def load_llm():
@@ -59,6 +64,9 @@ async def start():
     msg = cl.Message(content="Punem lemne în șemineu...")
     await msg.send()
     msg.content = "Salut, eu sunt expertul tău bibliotecar. Cu ce te pot ajuta azi?"
+    if LANG != "ro":
+        msg.content = utils.translate_message(
+            TEXT_TRANSLATOR, "Salut, eu sunt expertul tău bibliotecar. Cu ce te pot ajuta azi?", "ro", LANG)
     await msg.update()
     cl.user_session.set("chain", bot)
 
@@ -75,11 +83,11 @@ async def main(message):
     )
     cb.answer_reached = True
     trasnlated_message = utils.translate_message(
-        TEXT_TRANSLATOR, message.content, "ro", "en")
+        TEXT_TRANSLATOR, message.content, LANG, "en")
     res = await bot.acall(trasnlated_message, callbacks=[cb])
     answer = res["result"]
     answer = answer.replace(".", ".\n")
     translated_answer = utils.translate_message(
-        TEXT_TRANSLATOR, answer, "en", "ro")
+        TEXT_TRANSLATOR, answer, "en", LANG)
 
     await cl.Message(content=translated_answer).send()

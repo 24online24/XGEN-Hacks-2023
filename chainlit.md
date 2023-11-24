@@ -37,7 +37,9 @@ pip3 install -r requirements.txt
 Pentru a configura chatbot-ul, trebuie să creați un fișier `.env` în directorul rădăcină al proiectului. Acesta trebuie să conțină următoarele variabile de mediu:
 
 ```bash
-
+MSKEY=[Keys and Endpoint > Key 1 / Key 2 (una dintre ele)]
+ENDPOINT=[Keys and Endpoint > Text Translation]
+REGION=[Keys and Endpoint > Location/Region]
 ```
 
 ### Utilizare

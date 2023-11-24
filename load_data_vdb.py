@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain.vectorstores import Chroma
@@ -10,6 +12,9 @@ import time
 
 DATA_PATH = "data/"
 DB_PATH = "vectorstores/db/"
+
+load_dotenv()
+LANG = os.getenv("LANGUAGE")
 
 
 def create_vector_db():
@@ -30,7 +35,7 @@ def create_vector_db():
 
         try:
             translated_page_content = utils.translate_message(
-                text_translator, content, 'ro', 'en', True)
+                text_translator, content, LANG, 'en', True)
 
             if exponential_backoff > 1:
                 exponential_backoff /= 2
