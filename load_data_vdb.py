@@ -4,6 +4,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain.vectorstores import Chroma
 from langchain.embeddings import GPT4AllEmbeddings
+from analyzer import analyze
 
 import utils
 
@@ -58,6 +59,16 @@ def create_vector_db():
     texts = text_splitter.split_documents(documents)
     vectorstore = Chroma.from_documents(
         documents=texts, embedding=GPT4AllEmbeddings(), persist_directory=DB_PATH)
+
+    common_words, entities_ro, topic_words = analyze()
+
+    vectorstore.add_texts(
+        common_words, embedding=GPT4AllEmbeddings(), persist_directory=DB_PATH)
+    vectorstore.add_texts(
+        entities_ro, embedding=GPT4AllEmbeddings(), persist_directory=DB_PATH)
+    vectorstore.add_texts(
+        topic_words, embedding=GPT4AllEmbeddings(), persist_directory=DB_PATH)
+
     vectorstore.persist()
 
 
