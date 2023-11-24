@@ -56,9 +56,9 @@ async def start():
     mesajul este actualizat cu întâmpinarea bot-ului. Sesiunea este inițializată,
     folosind actualul "lanț" de mesaje. Acesta va conține conversația."""
     bot = qa_bot()
-    msg = cl.Message(content="Firing up the research info bot...")
+    msg = cl.Message(content="Punem lemne în șemineu...")
     await msg.send()
-    msg.content = "Hi, welcome to research info bot. What is your query?"
+    msg.content = "Salut, eu sunt expertul tău bibliotecar. Cu ce te pot ajuta azi?"
     await msg.update()
     cl.user_session.set("chain", bot)
 
