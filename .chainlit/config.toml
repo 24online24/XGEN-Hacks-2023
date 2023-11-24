@@ -32,7 +32,7 @@ multi_modal = false
 name = "GiPiTi"
 
 # Show the readme while the conversation is empty.
-show_readme_as_default = true
+show_readme_as_default = false
 
 # Description of the app and chatbot. This is used for HTML tags.
 description = "GiPiTi analizeaza textul unei carti in format PDF si iti ofera informatii despre personaje, locuri si evenimente."
