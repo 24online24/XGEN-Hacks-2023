@@ -1,16 +1,6 @@
 # XGEN-Hacks-2023
 Proiectul echipei "It Compiles, I Swear!".
 
-# Chat GiPiTi! 🤖📚
-
-Salutare! 👋 Chat GiPiTi este un chatbot care te ajută să aprofundezi textul unei cărți, într-un mod interactiv și distractiv. 🤓
-
-## Cum functioneaza? 🤔
-
-Chat GiPiTi are la bază un LLM, mai exact Llama2_7b 🦙, care împreună cu un RAG (Retrieve and Generate) model, oferă răspunsuri bazate pe context. 🤖
-
-Utilizatorul poate încărca o carte în format PDF, iar chatbot-ul va extrage textul și va crea un context pentru a putea răspunde la întrebări. 📚
-
 ## Cum se folosește Chat GipiTi? 🤓
 
 ### Dedependențe
