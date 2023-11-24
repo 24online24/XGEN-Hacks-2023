@@ -26,8 +26,20 @@ def create_vector_db():
             documents.remove(doc)
             continue
 
-        translated_page_content = translator_ro_to_en.translate(
-            content)
+        # Split the content into chunks of 500 characters
+        chunk_size = 500
+        content_chunks = [content[i:i+chunk_size]
+                          for i in range(0, len(content), chunk_size)]
+
+        # Translate each chunk and combine the translated parts
+        translated_parts = []
+        for chunk in content_chunks:
+            translated_chunk = translator_ro_to_en.translate(chunk)
+            translated_parts.append(translated_chunk)
+
+        # Combine the translated parts into a single string
+        translated_page_content = ' '.join(translated_parts)
+
         doc.page_content = translated_page_content
 
     text_splitter = RecursiveCharacterTextSplitter(
