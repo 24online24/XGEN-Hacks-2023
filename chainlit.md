@@ -4,7 +4,7 @@ Salutare! 👋 Chat GiPiTi este un chatbot care te ajută să aprofundezi textul
 
 ## Cum functioneaza? 🤔
 
-Chat GiPiTi are la bază un LLM, mai exact Llama2_7b 🦙, care împreună cu un RAG (Retrieve and Generate) model, oferă răspunsuri bazate pe context. 🤖
+Chat GiPiTi are la bază un LLM, mai exact Llama2_7b 🦙, care împreună cu un RAG (Retrieval Augmented Generation) model, oferă răspunsuri bazate pe context. 🤖
 
 Utilizatorul poate încărca o carte în format PDF, iar chatbot-ul va extrage textul și va crea un context pentru a putea răspunde la întrebări. 📚
 
@@ -20,7 +20,7 @@ Avem nevoie de următoarele dependențe pentru a rula aplicația:
 
 ### Instalare
 
-Recomandam folosirea unui virtual environment pentru a instala dependențele. Pentru a crea un virtual environment, rulați următoarele comenzi:
+Recomandăm folosirea unui virtual environment pentru a instala dependențele. Pentru a crea un virtual environment, rulați următoarele comenzi:
 
 ```bash
 python3 -m venv venv
