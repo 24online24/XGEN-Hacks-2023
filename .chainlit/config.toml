@@ -19,7 +19,7 @@ cache = false
 prompt_playground = true
 
 # Authorize users to upload files with messages
-multi_modal = true
+multi_modal = false
 
 # Allows user to use speech to text
 [features.speech_to_text]
@@ -29,13 +29,13 @@ multi_modal = true
 
 [UI]
 # Name of the app and chatbot.
-name = "Chatbot"
+name = "GiPiTi"
 
 # Show the readme while the conversation is empty.
 show_readme_as_default = true
 
 # Description of the app and chatbot. This is used for HTML tags.
-# description = ""
+description = "GiPiTi analizeaza textul unei carti in format PDF si iti ofera informatii despre personaje, locuri si evenimente."
 
 # Large size content are by default collapsed for a cleaner ui
 default_collapse_content = true
@@ -51,7 +51,7 @@ hide_cot = false
 
 # Specify a CSS file that can be used to customize the user interface.
 # The CSS file can be served from the public directory or via an external link.
-# custom_css = "/public/test.css"
+custom_css = "/public/stylesheets.css"
 
 # Override default MUI light theme. (Check theme.ts)
 [UI.theme.light]
