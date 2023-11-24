@@ -79,6 +79,7 @@ async def main(message):
     res = await bot.acall(trasnlated_message, callbacks=[cb])
     answer = res["result"]
     answer = answer.replace(".", ".\n")
-    translated_answer = TEXT_TRANSLATOR.translate_message(answer, "en", "ro")
+    translated_answer = utils.translate_message(
+        TEXT_TRANSLATOR, answer, "en", "ro")
 
     await cl.Message(content=translated_answer).send()
