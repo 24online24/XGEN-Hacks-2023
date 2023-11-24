@@ -19,6 +19,7 @@ def create_translator() -> TextTranslationClient:
 
 
 def translate_message(translator: TextTranslationClient, message: str, from_lang: str, to_lang: str, throw_ex: bool = False) -> str:
+    """Traduce un mesaj dintr-o limbă în alta."""
     try:
         source_language = from_lang
         target_languages = [to_lang]

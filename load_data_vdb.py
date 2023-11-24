@@ -38,14 +38,20 @@ def create_vector_db():
             translated_page_content = utils.translate_message(
                 text_translator, content, LANG, 'en', True)
 
-            if exponential_backoff > 1:
-                exponential_backoff /= 2
+            if exponential_backoff >= 1:
+                if exponential_backoff > 1:
+                    exponential_backoff /= 2
+                else:
+                    exponential_backoff = 0
                 print(f"Exponential backoff: {exponential_backoff}")
 
         except Exception as exception:
             error_code = exception.args[0]
             if error_code == 429001 and exponential_backoff < 16:
-                exponential_backoff *= 2
+                if exponential_backoff == 0:
+                    exponential_backoff = 1
+                else:
+                    exponential_backoff *= 2
                 print(f"Exponential backoff: {exponential_backoff}")
             translated_page_content = ""
 
